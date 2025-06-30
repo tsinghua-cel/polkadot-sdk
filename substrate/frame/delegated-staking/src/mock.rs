@@ -349,7 +349,7 @@ pub(crate) fn start_era(era: sp_staking::EraIndex) {
 
 	for e in start_era..=era {
 		// Use era index as session index for simplicity in tests
-		bonded_eras.push((e, e as u32));
+		bonded_eras.push((e, e));
 		// Initialize ErasTotalStake for each era to satisfy era_present checks
 		ErasTotalStake::<T>::insert(e, 0u128);
 	}
