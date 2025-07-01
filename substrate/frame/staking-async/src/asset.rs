@@ -133,7 +133,7 @@ pub fn burn<T: Config>(amount: BalanceOf<T>) -> PositiveImbalanceOf<T> {
 /// If `Value` is lower than the current staked balance, the difference is unlocked.
 ///
 /// Should only be used with test.
-#[cfg(any(test, feature = "runtime-benchmarks"))]
+#[cfg(any(test, feature = "runtime-benchmarks", feature = "testing-utils"))]
 pub fn set_stakeable_balance<T: Config>(who: &T::AccountId, value: BalanceOf<T>) {
 	use frame_support::traits::fungible::Mutate;
 

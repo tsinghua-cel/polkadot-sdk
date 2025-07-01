@@ -714,7 +714,7 @@ pub trait DelegationMigrator {
 	/// Drop the `Agent` account and its associated delegators.
 	///
 	/// Also removed from [`StakingUnchecked`] as a Virtual Staker. Useful for testing.
-	#[cfg(feature = "runtime-benchmarks")]
+	#[cfg(any(feature = "runtime-benchmarks", feature = "testing-utils", test))]
 	fn force_kill_agent(agent: Agent<Self::AccountId>);
 }
 

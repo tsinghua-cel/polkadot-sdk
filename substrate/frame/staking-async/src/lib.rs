@@ -52,7 +52,7 @@
 
 #[cfg(feature = "runtime-benchmarks")]
 pub mod benchmarking;
-#[cfg(any(feature = "runtime-benchmarks", test))]
+#[cfg(any(feature = "runtime-benchmarks", feature = "testing-utils", test))]
 pub mod testing_utils;
 
 #[cfg(test)]

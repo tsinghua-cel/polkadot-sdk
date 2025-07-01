@@ -26,11 +26,13 @@ sp-runtime = { workspace = true }
 
 [features]
 default = ["std"]
+serde = ["dep:serde", "scale-info/serde"]
 std = [
 	"codec/std",
 	"scale-info/std",
-	"serde/std",
+	"serde?/std",
 	"sp-core/std",
 	"sp-runtime/std",
 ]
 runtime-benchmarks = ["sp-runtime/runtime-benchmarks"]
+testing-utils = []

@@ -321,7 +321,6 @@ pub(crate) fn setup_delegation_stake(
 }
 
 pub(crate) fn start_era(era: sp_staking::EraIndex) {
-	// Use comprehensive staking era setup that satisfies all try_state requirements
 	pallet_staking_async::testing_utils::setup_staking_era_state::<T>(
 		era,
 		BondingDuration::get(),
