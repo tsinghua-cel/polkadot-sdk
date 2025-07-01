@@ -32,7 +32,6 @@ use frame_election_provider_support::{
 	onchain, SequentialPhragmen,
 };
 use frame_support::dispatch::RawOrigin;
-use pallet_staking_async::ActiveEraInfo;
 use sp_core::{ConstBool, U256};
 use sp_runtime::traits::Convert;
 use sp_staking::{Agent, Stake, StakingInterface};
@@ -273,29 +272,11 @@ impl ExtBuilder {
 		ext.execute_with(|| {
 			#[cfg(feature = "try-runtime")]
 			{
-				// We do not call `<AllPalletsWithSystem as
-				// frame_support::traits::TryState<u64>>::try_state(...)` to avoid to have to
-				// properly initialize staking pallet's era-related storage items in a way that
-				// satifies consistency checks in the staking pallet's try_state logic. The
-				// staking pallet expects very specific relationships between storage items like
-				// `ErasTotalStake`, `ErasValidatorReward`, `ErasValidatorPrefs`, and
-				// `ErasStakersOverview`, that we don't want to replicate here.
-				// Run other pallets' try_state individually instead, avoiding staking era setup
-				// complexity.
-				frame_system::Pallet::<Runtime>::try_state(
+				<AllPalletsWithSystem as frame_support::traits::TryState<u64>>::try_state(
 					frame_system::Pallet::<Runtime>::block_number(),
+					frame_support::traits::TryStateSelect::All,
 				)
 				.unwrap();
-				pallet_balances::Pallet::<Runtime>::try_state(
-					frame_system::Pallet::<Runtime>::block_number(),
-				)
-				.unwrap();
-				pallet_nomination_pools::Pallet::<Runtime>::try_state(frame_system::Pallet::<
-					Runtime,
-				>::block_number())
-				.unwrap();
-				// Run delegated staking try_state specifically
-				DelegatedStaking::do_try_state().unwrap();
 			}
 		});
 	}
@@ -340,28 +321,12 @@ pub(crate) fn setup_delegation_stake(
 }
 
 pub(crate) fn start_era(era: sp_staking::EraIndex) {
-	use frame_support::BoundedVec;
-	use pallet_staking_async::{ActiveEra, BondedEras, CurrentEra, ErasTotalStake};
-
-	CurrentEra::<T>::set(Some(era));
-	ActiveEra::<T>::set(Some(ActiveEraInfo { index: era, start: None }));
-
-	// Initialize BondedEras to satisfy try_state requirements
-	// BondedEras must contain the range [active_era - bonding_duration .. active_era]
-	let bonding_duration = BondingDuration::get();
-	let start_era = era.saturating_sub(bonding_duration);
-	let mut bonded_eras = Vec::new();
-
-	for e in start_era..=era {
-		// Use era index as session index for simplicity in tests
-		bonded_eras.push((e, e));
-		// Initialize ErasTotalStake for each era to satisfy era_present checks
-		ErasTotalStake::<T>::insert(e, 0u128);
-	}
-
-	let bonded_vec =
-		BoundedVec::try_from(bonded_eras).expect("BondedEras should fit within bounds");
-	BondedEras::<T>::put(bonded_vec);
+	// Use comprehensive staking era setup that satisfies all try_state requirements
+	pallet_staking_async::testing_utils::setup_staking_era_state::<T>(
+		era,
+		BondingDuration::get(),
+		Some(vec![GENESIS_VALIDATOR, 18, 19, 20, 21, 22]), // Include all test validators
+	);
 }
 
 pub(crate) fn eq_stake(who: AccountId, total: Balance, active: Balance) -> bool {

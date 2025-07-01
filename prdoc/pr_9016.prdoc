@@ -28,7 +28,7 @@ crates:
 - name: asset-hub-westend-runtime
   bump: minor
 - name: westend-runtime
-  bump: minor
+  bump: patch
 - name: pallet-fast-unstake
   bump: patch
 - name: pallet-nomination-pools-benchmarking
@@ -37,3 +37,5 @@ crates:
   bump: patch
 - name: pallet-delegated-staking
   bump: patch
+- name: pallet-staking-async
+  bump: minor

@@ -242,6 +242,78 @@ pub fn current_era<T: Config>() -> EraIndex {
 	CurrentEra::<T>::get().unwrap_or(0)
 }
 
+/// Initialize BondedEras storage to satisfy try_state requirements.
+/// BondedEras must contain the range [active_era - bonding_duration .. active_era].
+pub fn initialize_bonded_eras<T: Config>(era: EraIndex, bonding_duration: u32) {
+	use frame_support::BoundedVec;
+
+	let start_era = era.saturating_sub(bonding_duration);
+	let mut bonded_eras = Vec::new();
+
+	for e in start_era..=era {
+		// Use era index as session index for simplicity in tests
+		bonded_eras.push((e, e));
+		// Initialize ErasTotalStake for each era to satisfy era_present checks
+		ErasTotalStake::<T>::insert(e, BalanceOf::<T>::zero());
+	}
+
+	let bonded_vec =
+		BoundedVec::try_from(bonded_eras).expect("BondedEras should fit within bounds");
+	BondedEras::<T>::put(bonded_vec);
+}
+
+/// Comprehensive staking era setup that satisfies try_state consistency checks.
+/// This function sets up all the required staking storage items for proper era state,
+/// allowing other pallets to use `AllPalletsWithSystem::try_state()` without issues.
+///
+/// Sets up:
+/// - CurrentEra and ActiveEra
+/// - BondedEras with proper range
+/// - ErasTotalStake for each era
+/// - ErasValidatorReward for each era
+/// - ErasValidatorPrefs for each era (if validators provided)
+/// - ErasStakersOverview for each era (if validators provided)
+pub fn setup_staking_era_state<T: Config>(
+	era: EraIndex,
+	bonding_duration: u32,
+	validators: Option<Vec<T::AccountId>>,
+) {
+	use sp_runtime::Perbill;
+
+	CurrentEra::<T>::set(Some(era));
+	ActiveEra::<T>::set(Some(ActiveEraInfo { index: era, start: None }));
+
+	initialize_bonded_eras::<T>(era, bonding_duration);
+
+	// Set up era-related storage for consistency
+	let start_era = era.saturating_sub(bonding_duration);
+	for e in start_era..=era {
+		ErasValidatorReward::<T>::insert(e, BalanceOf::<T>::zero());
+
+		// If validators are provided, set up their preferences and stakers overview
+		if let Some(ref validator_list) = validators {
+			for validator in validator_list {
+				ErasValidatorPrefs::<T>::insert(
+					e,
+					validator,
+					ValidatorPrefs { commission: Perbill::from_percent(0), blocked: false },
+				);
+
+				ErasStakersOverview::<T>::insert(
+					e,
+					validator,
+					PagedExposureMetadata {
+						total: BalanceOf::<T>::zero(),
+						own: BalanceOf::<T>::zero(),
+						nominator_count: 0,
+						page_count: 0,
+					},
+				);
+			}
+		}
+	}
+}
+
 pub fn migrate_to_old_currency<T: Config>(who: T::AccountId) {
 	use frame_support::traits::LockableCurrency;
 	let staked = asset::staked::<T>(&who);
