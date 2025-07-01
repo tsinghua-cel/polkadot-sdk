@@ -38,8 +38,8 @@ use frame_support::{
 	dispatch::WithPostDispatchInfo,
 	pallet_prelude::*,
 	traits::{
-		fungible::Inspect, Defensive, DefensiveSaturating, Get, Imbalance, InspectLockableCurrency,
-		LockableCurrency, OnUnbalanced,
+		Defensive, DefensiveSaturating, Get, Imbalance, InspectLockableCurrency, LockableCurrency,
+		OnUnbalanced,
 	},
 	weights::Weight,
 };
@@ -1356,6 +1356,7 @@ impl<T: Config> SortedListProvider<T::AccountId> for UseValidatorsMap<T> {
 
 	#[cfg(feature = "runtime-benchmarks")]
 	fn score_update_worst_case(_who: &T::AccountId, is_increase: bool) -> Self::Score {
+		use frame_support::traits::fungible::Inspect;
 		use sp_runtime::traits::Bounded;
 		if is_increase {
 			Self::Score::max_value()
