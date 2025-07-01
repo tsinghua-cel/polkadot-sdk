@@ -314,6 +314,23 @@ pub fn setup_staking_era_state<T: Config>(
 	}
 }
 
+/// Create a validator with given balance and stake.
+/// Returns the validator's account id.
+pub fn create_validator<T: Config>(n: u32, balance: BalanceOf<T>) -> T::AccountId {
+	let validator: T::AccountId = account("validator", n, SEED);
+	let _ = asset::set_stakeable_balance::<T>(&validator, balance);
+
+	let stake = MinValidatorBond::<T>::get() * 100u32.into();
+	Bonded::<T>::insert(validator.clone(), validator.clone());
+	Ledger::<T>::insert(validator.clone(), StakingLedger::<T>::new(validator.clone(), stake));
+	Pallet::<T>::do_add_validator(
+		&validator,
+		ValidatorPrefs { commission: Perbill::zero(), blocked: false },
+	);
+
+	validator
+}
+
 pub fn migrate_to_old_currency<T: Config>(who: T::AccountId) {
 	use frame_support::traits::LockableCurrency;
 	let staked = asset::staked::<T>(&who);
