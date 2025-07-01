@@ -409,7 +409,7 @@ impl DelegationMigrator for DelegateMock {
 		unimplemented!("not used in current unit tests")
 	}
 
-	#[cfg(any(feature = "runtime-benchmarks", feature = "testing-utils", test))]
+	#[cfg(any(feature = "runtime-benchmarks", test))]
 	fn force_kill_agent(_agent: Agent<Self::AccountId>) {
 		unimplemented!("not used in current unit tests")
 	}
