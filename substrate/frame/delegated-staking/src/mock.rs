@@ -259,11 +259,8 @@ impl ExtBuilder {
 		ext.execute_with(|| {
 			// for events to be deposited.
 			frame_system::Pallet::<Runtime>::set_block_number(1);
-			// set era for staking and initialize bonded eras.
-			for era in 0..=BondingDuration::get() {
-				start_era(era);
-			}
-			// Set current era back to 0
+
+			// Set era for staking
 			start_era(0);
 		});
 
