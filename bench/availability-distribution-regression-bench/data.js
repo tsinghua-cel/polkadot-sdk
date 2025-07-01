@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1751386135759,
+  "lastUpdate": 1751394922184,
   "repoUrl": "https://github.com/paritytech/polkadot-sdk",
   "entries": {
     "availability-distribution-regression-bench": [
@@ -76759,6 +76759,60 @@ window.BENCHMARK_DATA = {
           {
             "name": "bitfield-distribution",
             "value": 0.022494970073333332,
+            "unit": "seconds"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "1431590+nkpar@users.noreply.github.com",
+            "name": "Nikolai Kozlov",
+            "username": "nkpar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "6824a6782354e274cf308be314f142551c5457ab",
+          "message": "Add optional auto-rebag within on-idle (#8684)\n\nImplemented an `on_idle` hook for automatic rebagging of accounts,\nenabling incremental correction of account positions within the\nbags-list during the idle phase of block execution. Introduced new\nstorages and configurable constants to support this functionality, along\nwith improvements in logging and internal helpers.\n\n---------\n\nCo-authored-by: cmd[bot] <41898282+github-actions[bot]@users.noreply.github.com>\nCo-authored-by: Ankan <10196091+Ank4n@users.noreply.github.com>\nCo-authored-by: Kian Paimani <5588131+kianenigma@users.noreply.github.com>",
+          "timestamp": "2025-07-01T17:34:56Z",
+          "tree_id": "d7d7c3d9377a77baccd6e32ad81ac989e50d8655",
+          "url": "https://github.com/paritytech/polkadot-sdk/commit/6824a6782354e274cf308be314f142551c5457ab"
+        },
+        "date": 1751394904906,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "Sent to peers",
+            "value": 18481.666666666653,
+            "unit": "KiB"
+          },
+          {
+            "name": "Received from peers",
+            "value": 433.3333333333332,
+            "unit": "KiB"
+          },
+          {
+            "name": "bitfield-distribution",
+            "value": 0.022310690713333338,
+            "unit": "seconds"
+          },
+          {
+            "name": "availability-store",
+            "value": 0.15753637962666667,
+            "unit": "seconds"
+          },
+          {
+            "name": "test-environment",
+            "value": 0.008708540660000097,
+            "unit": "seconds"
+          },
+          {
+            "name": "availability-distribution",
+            "value": 0.012883720000000001,
             "unit": "seconds"
           }
         ]
