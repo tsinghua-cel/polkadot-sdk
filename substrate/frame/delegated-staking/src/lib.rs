@@ -761,7 +761,7 @@ impl<T: Config> Pallet<T> {
 	}
 }
 
-#[cfg(any(test, feature = "try-runtime"))]
+#[cfg(feature = "try-runtime")]
 use alloc::collections::btree_map::BTreeMap;
 
 #[cfg(feature = "try-runtime")]
