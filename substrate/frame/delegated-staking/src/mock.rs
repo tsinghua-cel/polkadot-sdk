@@ -276,9 +276,15 @@ impl ExtBuilder {
 		ext.execute_with(|| {
 			#[cfg(feature = "try-runtime")]
 			{
-				// Run delegated staking try_state specifically
-				DelegatedStaking::do_try_state().unwrap();
-				// Run other pallets' try_state individually, avoiding staking era setup complexity
+				// We do not call `<AllPalletsWithSystem as
+				// frame_support::traits::TryState<u64>>::try_state(...)` to avoid to have to
+				// properly initialize staking pallet's era-related storage items in a way that
+				// satifies consistency checks in the staking pallet's try_state logic. The
+				// staking pallet expects very specific relationships between storage items like
+				// `ErasTotalStake`, `ErasValidatorReward`, `ErasValidatorPrefs`, and
+				// `ErasStakersOverview`, that we don't want to replicate here.
+				// Run other pallets' try_state individually instead, avoiding staking era setup
+				// complexity.
 				frame_system::Pallet::<Runtime>::try_state(
 					frame_system::Pallet::<Runtime>::block_number(),
 				)
@@ -291,6 +297,8 @@ impl ExtBuilder {
 					Runtime,
 				>::block_number())
 				.unwrap();
+				// Run delegated staking try_state specifically
+				DelegatedStaking::do_try_state().unwrap();
 			}
 		});
 	}

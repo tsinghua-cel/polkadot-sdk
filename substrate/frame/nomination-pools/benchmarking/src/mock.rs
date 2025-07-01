@@ -18,9 +18,7 @@
 use crate::VoterBagsListInstance;
 use frame_election_provider_support::VoteWeight;
 use frame_support::{
-	derive_impl,
-	pallet_prelude::*,
-	parameter_types,
+	derive_impl, parameter_types,
 	traits::{ConstU32, ConstU64, Nothing, VariantCountOf},
 	PalletId,
 };
