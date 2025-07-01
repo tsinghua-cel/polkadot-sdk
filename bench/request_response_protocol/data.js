@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1751388813087,
+  "lastUpdate": 1751394323386,
   "repoUrl": "https://github.com/paritytech/polkadot-sdk",
   "entries": {
     "request_response_protocol": [
@@ -52595,6 +52595,114 @@ window.BENCHMARK_DATA = {
             "name": "request_response_protocol/litep2p/serially/16MB",
             "value": 2720509471,
             "range": "± 20809582",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "1431590+nkpar@users.noreply.github.com",
+            "name": "Nikolai Kozlov",
+            "username": "nkpar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "6824a6782354e274cf308be314f142551c5457ab",
+          "message": "Add optional auto-rebag within on-idle (#8684)\n\nImplemented an `on_idle` hook for automatic rebagging of accounts,\nenabling incremental correction of account positions within the\nbags-list during the idle phase of block execution. Introduced new\nstorages and configurable constants to support this functionality, along\nwith improvements in logging and internal helpers.\n\n---------\n\nCo-authored-by: cmd[bot] <41898282+github-actions[bot]@users.noreply.github.com>\nCo-authored-by: Ankan <10196091+Ank4n@users.noreply.github.com>\nCo-authored-by: Kian Paimani <5588131+kianenigma@users.noreply.github.com>",
+          "timestamp": "2025-07-01T17:34:56Z",
+          "tree_id": "d7d7c3d9377a77baccd6e32ad81ac989e50d8655",
+          "url": "https://github.com/paritytech/polkadot-sdk/commit/6824a6782354e274cf308be314f142551c5457ab"
+        },
+        "date": 1751394306074,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "request_response_protocol/libp2p/serially/64B",
+            "value": 18341722,
+            "range": "± 200591",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/libp2p/serially/512B",
+            "value": 18892018,
+            "range": "± 258924",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/libp2p/serially/4KB",
+            "value": 19860345,
+            "range": "± 236069",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/libp2p/serially/64KB",
+            "value": 25021147,
+            "range": "± 74134",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/libp2p/serially/256KB",
+            "value": 56647011,
+            "range": "± 733254",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/libp2p/serially/2MB",
+            "value": 332801114,
+            "range": "± 2881633",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/libp2p/serially/16MB",
+            "value": 2483728700,
+            "range": "± 109500317",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/litep2p/serially/64B",
+            "value": 15685321,
+            "range": "± 212322",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/litep2p/serially/512B",
+            "value": 15997974,
+            "range": "± 191200",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/litep2p/serially/4KB",
+            "value": 16210781,
+            "range": "± 222148",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/litep2p/serially/64KB",
+            "value": 20867911,
+            "range": "± 193991",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/litep2p/serially/256KB",
+            "value": 52717014,
+            "range": "± 688355",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/litep2p/serially/2MB",
+            "value": 300839935,
+            "range": "± 2004475",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "request_response_protocol/litep2p/serially/16MB",
+            "value": 2467310572,
+            "range": "± 37769240",
             "unit": "ns/iter"
           }
         ]
