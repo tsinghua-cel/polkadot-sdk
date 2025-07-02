@@ -28,7 +28,7 @@ frame-system = { workspace = true }
 pallet-bags-list = { workspace = true }
 pallet-delegated-staking = { workspace = true }
 pallet-nomination-pools = { workspace = true }
-pallet-staking-async = { workspace = true, features = ["testing-utils"] }
+pallet-staking-async = { workspace = true }
 pallet-staking-async-rc-client = { workspace = true }
 
 # Substrate Primitives

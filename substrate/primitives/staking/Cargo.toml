@@ -35,4 +35,3 @@ std = [
 	"sp-runtime/std",
 ]
 runtime-benchmarks = ["sp-runtime/runtime-benchmarks"]
-testing-utils = []
