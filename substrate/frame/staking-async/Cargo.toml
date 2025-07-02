@@ -91,3 +91,4 @@ try-runtime = [
 	"pallet-staking-async-rc-client/try-runtime",
 	"sp-runtime/try-runtime",
 ]
+testing-utils = ["runtime-benchmarks"]

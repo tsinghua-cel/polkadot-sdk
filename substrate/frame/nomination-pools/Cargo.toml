@@ -34,6 +34,7 @@ sp-tracing = { optional = true, workspace = true }
 
 [dev-dependencies]
 pallet-balances = { workspace = true, default-features = true }
+pallet-staking-async = { workspace = true, default-features = true, features = ["testing-utils"] }
 sp-tracing = { workspace = true, default-features = true }
 
 [features]

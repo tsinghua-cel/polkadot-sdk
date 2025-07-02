@@ -15,6 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![cfg(any(feature = "runtime-benchmarks", test))]
+
 use crate::{self as delegated_staking, types::AgentLedgerOuter};
 use frame_support::{
 	assert_ok, derive_impl,
@@ -34,7 +36,7 @@ use frame_election_provider_support::{
 use frame_support::dispatch::RawOrigin;
 use sp_core::{ConstBool, U256};
 use sp_runtime::traits::Convert;
-use sp_staking::{Agent, Stake, StakingInterface};
+use sp_staking::{Agent, DelegationInterface, Stake, StakingInterface};
 
 pub type T = Runtime;
 type Block = frame_system::mocking::MockBlock<Runtime>;
@@ -314,7 +316,7 @@ pub(crate) fn setup_delegation_stake(
 	}
 
 	// sanity checks
-	assert_eq!(DelegatedStaking::stakeable_balance(Agent::from(agent)), delegated_amount);
+	assert_eq!(DelegatedStaking::agent_balance(Agent::from(agent)), Some(delegated_amount));
 	assert_eq!(AgentLedgerOuter::<T>::get(&agent).unwrap().available_to_bond(), 0);
 
 	delegated_amount
@@ -324,7 +326,14 @@ pub(crate) fn start_era(era: sp_staking::EraIndex) {
 	pallet_staking_async::testing_utils::setup_staking_era_state::<T>(
 		era,
 		BondingDuration::get(),
-		Some(vec![GENESIS_VALIDATOR, 18, 19, 20, 21, 22]), // Include all test validators
+		Some(vec![
+			GENESIS_VALIDATOR.into(),
+			18u128.into(),
+			19u128.into(),
+			20u128.into(),
+			21u128.into(),
+			22u128.into(),
+		]), // Include all test validators
 	);
 }
 
