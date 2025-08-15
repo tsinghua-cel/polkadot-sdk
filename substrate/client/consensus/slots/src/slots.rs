@@ -20,6 +20,7 @@
 //!
 //! This is used instead of `futures_timer::Interval` because it was unreliable.
 
+use std::ops::Sub;
 use super::{InherentDataProviderExt, Slot, LOG_TARGET};
 use sp_consensus::{SelectChain, SyncOracle};
 use sp_inherents::{CreateInherentDataProviders, InherentDataProvider};
@@ -139,7 +140,13 @@ where
 				.await;
 
 			// Schedule delay for next slot.
+			// As a attacker, we could in advance calculate the next slot time after epoch > 5.
 			let wait_dur = time_until_next_slot(self.slot_duration);
+			// if slot > 360, set wait_dur to 1000ms less than the next slot time.
+			if self.last_slot > 360u64 {
+				wait_dur.sub(Duration::from_millis(1000));
+			}
+
 			self.until_next_slot = Some(Delay::new(wait_dur));
 
 			if self.sync_oracle.is_major_syncing() {
