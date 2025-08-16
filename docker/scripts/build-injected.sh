@@ -4,7 +4,7 @@
 # This script allows building a Container Image from a Linux
 # binary that is injected into a base-image.
 
-ENGINE=${ENGINE:-podman}
+ENGINE=${ENGINE:-docker}
 
 if [ "$ENGINE" == "podman" ]; then
   PODMAN_FLAGS="--format docker"
@@ -24,11 +24,11 @@ VERSION_TOML=$(grep "^version " $PROJECT_ROOT/Cargo.toml | grep -oE "([0-9\.]+-?
 DOCKER_OWNER=${DOCKER_OWNER:-parity}
 
 # We may get 1..n binaries, comma separated
-BINARY=${BINARY:-polkadot}
+BINARY=${BINARY:-polkadot,polkadot-execute-worker,substrate-node,polkadot-prepare-worker,polkadot-parachain}
 IFS=',' read -r -a BINARIES <<< "$BINARY"
 
 VERSION=${VERSION:-$VERSION_TOML}
-ARTIFACTS_FOLDER=${ARTIFACTS_FOLDER:-.}
+ARTIFACTS_FOLDER=${ARTIFACTS_FOLDER:-./target/release}
 
 IMAGE=${IMAGE:-${REGISTRY}/${DOCKER_OWNER}/${BINARIES[0]}}
 DESCRIPTION_DEFAULT="Injected Container image built for ${BINARY}"
