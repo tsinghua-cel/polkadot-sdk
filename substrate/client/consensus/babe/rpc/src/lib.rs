@@ -125,6 +125,7 @@ where
 				.collect::<Vec<_>>()
 		};
 
+		// todo: vicotor pre-fetch duty in current epoch.
 		for slot in *epoch_start..*epoch_end {
 			if let Some((claim, key)) =
 				authorship::claim_slot_using_keys(slot.into(), &epoch, &self.keystore, &keys)

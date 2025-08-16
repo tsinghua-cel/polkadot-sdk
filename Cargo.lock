@@ -17715,6 +17715,7 @@ dependencies = [
  "futures-timer",
  "log",
  "parity-scale-codec",
+ "rand",
  "sc-client-api",
  "sc-consensus",
  "sc-telemetry",

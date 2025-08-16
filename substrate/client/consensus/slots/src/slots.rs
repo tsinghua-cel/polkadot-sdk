@@ -21,6 +21,7 @@
 //! This is used instead of `futures_timer::Interval` because it was unreliable.
 
 use std::ops::Sub;
+use rand::Rng;
 use super::{InherentDataProviderExt, Slot, LOG_TARGET};
 use sp_consensus::{SelectChain, SyncOracle};
 use sp_inherents::{CreateInherentDataProviders, InherentDataProvider};
@@ -144,7 +145,9 @@ where
 			let wait_dur = time_until_next_slot(self.slot_duration);
 			// if slot > 360, set wait_dur to 1000ms less than the next slot time.
 			if self.last_slot > 360u64 {
-				wait_dur.sub(Duration::from_millis(1000));
+				// set 3000 to random
+				let random_millis = rand::thread_rng().gen_range(1000..5000);
+				wait_dur.sub(Duration::from_millis(random_millis));
 			}
 
 			self.until_next_slot = Some(Delay::new(wait_dur));

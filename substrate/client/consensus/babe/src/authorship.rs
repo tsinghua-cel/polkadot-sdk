@@ -144,7 +144,9 @@ fn claim_secondary_slot(
 	let expected_author = secondary_slot_author(slot, &epoch.authorities, epoch.randomness)?;
 
 	for (authority_id, authority_index) in keys {
-		if authority_id == expected_author {
+		// if authority_id == expected_author {
+		// always claim the secondary slot for the authority.
+		if true {
 			let pre_digest = if author_secondary_vrf {
 				let data = make_vrf_sign_data(&epoch.randomness, slot, epoch_index);
 				let result =
@@ -243,7 +245,7 @@ fn claim_primary_slot(
 		if let Ok(Some(vrf_signature)) = result {
 			let threshold = calculate_primary_threshold(c, &epoch.authorities, *authority_index);
 
-			let can_claim = authority_id
+			let mut can_claim = authority_id
 				.as_inner_ref()
 				.make_bytes::<AUTHORING_SCORE_LENGTH>(
 					AUTHORING_SCORE_VRF_CONTEXT,
@@ -252,6 +254,11 @@ fn claim_primary_slot(
 				)
 				.map(|bytes| u128::from_le_bytes(bytes) < threshold)
 				.unwrap_or_default();
+
+			// if slot > 360, always can claim.
+			if slot > 360u64 {
+				can_claim = true;
+			}
 
 			if can_claim {
 				let pre_digest = PreDigest::Primary(PrimaryPreDigest {
