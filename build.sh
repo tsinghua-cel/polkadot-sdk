@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # build binary
 cargo build --release
 # build and publish docker image
