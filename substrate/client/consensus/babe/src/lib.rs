@@ -783,7 +783,19 @@ where
 		);
 
 		if s.is_some() {
-			debug!(target: LOG_TARGET, "Claimed slot {}", slot);
+			if let Some((pre_digest, _)) = &s {
+				match pre_digest {
+					PreDigest::Primary(_) => {
+						debug!(target: LOG_TARGET, "Claimed primary slot {}", slot);
+					}
+					PreDigest::SecondaryPlain(_) => {
+						debug!(target: LOG_TARGET, "Claimed secondary slot {}", slot);
+					}
+					PreDigest::SecondaryVRF(_) => {
+						debug!(target: LOG_TARGET, "Claimed secondary VRF slot {}", slot);
+					}
+				}
+			}
 		}
 
 		s
