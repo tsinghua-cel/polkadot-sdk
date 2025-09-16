@@ -139,6 +139,7 @@ where
 				.await;
 
 			// Schedule delay for next slot.
+			log::debug!(target: LOG_TARGET, "next slot internal trigger.");
 			let wait_dur = time_until_next_slot(self.slot_duration);
 			self.until_next_slot = Some(Delay::new(wait_dur));
 

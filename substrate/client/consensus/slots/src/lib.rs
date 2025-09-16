@@ -526,6 +526,7 @@ pub async fn start_slot_worker<B, C, W, SO, CIDP, Proof>(
 
 	loop {
 		let slot_info = slots.next_slot().await;
+		log::debug!(target: LOG_TARGET, "next slot triggered");
 		let _ = worker.on_slot(slot_info).await;
 	}
 }
