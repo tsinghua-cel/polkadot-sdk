@@ -144,9 +144,9 @@ fn claim_secondary_slot(
 	let expected_author = secondary_slot_author(slot, &epoch.authorities, epoch.randomness)?;
 
 	for (authority_id, authority_index) in keys {
-		// if authority_id == expected_author {
+		if authority_id == expected_author {
 		// always claim the secondary slot for the authority.
-		if true {
+		// if true {
 			let pre_digest = if author_secondary_vrf {
 				let data = make_vrf_sign_data(&epoch.randomness, slot, epoch_index);
 				let result =

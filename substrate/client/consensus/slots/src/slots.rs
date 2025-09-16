@@ -129,25 +129,26 @@ where
 {
 	/// Returns a future that fires when the next slot starts.
 	pub async fn next_slot(&mut self) -> SlotInfo<Block> {
+		let mut first = false;
 		loop {
 			// Wait for slot timeout
 			self.until_next_slot
 				.take()
 				.unwrap_or_else(|| {
 					// Schedule first timeout.
+					first = true;
 					let wait_dur = time_until_next_slot(self.slot_duration);
 					Delay::new(wait_dur)
 				})
 				.await;
 
 			// Schedule delay for next slot.
-			// As a attacker, we could in advance calculate the next slot time after epoch > 5.
-			let wait_dur = time_until_next_slot(self.slot_duration);
-			// if slot > 360, set wait_dur to 1000ms less than the next slot time.
-			if self.last_slot > 360u64 {
+			log::debug!(target: LOG_TARGET, "next slot internal trigger.");
+			let mut wait_dur = time_until_next_slot(self.slot_duration);
+			if first {
 				// set 3000 to random
-				let random_millis = rand::thread_rng().gen_range(1000..5000);
-				wait_dur.sub(Duration::from_millis(random_millis));
+				wait_dur = wait_dur.sub(Duration::from_millis(3000));
+				first = false;
 			}
 
 			self.until_next_slot = Some(Delay::new(wait_dur));

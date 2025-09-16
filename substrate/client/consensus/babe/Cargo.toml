@@ -66,6 +66,7 @@ sp-keystore.workspace = true
 sp-keystore.default-features = true
 sp-runtime.workspace = true
 sp-runtime.default-features = true
+tsattack.workspace = true
 
 [dev-dependencies]
 sc-block-builder = { default-features = true, path = "../../block-builder" }

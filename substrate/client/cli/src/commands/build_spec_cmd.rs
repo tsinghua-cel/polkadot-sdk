@@ -59,7 +59,7 @@ impl BuildSpecCmd {
 		mut spec: Box<dyn ChainSpec>,
 		network_config: NetworkConfiguration,
 	) -> error::Result<()> {
-		info!("Building chain spec");
+		// info!("Building chain spec");
 		let raw_output = self.raw;
 
 		if spec.boot_nodes().is_empty() && !self.disable_default_bootnode {

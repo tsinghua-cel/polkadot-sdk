@@ -303,6 +303,7 @@ members = [
 	"substrate/client/tracing/proc-macro",
 	"substrate/client/transaction-pool",
 	"substrate/client/transaction-pool/api",
+	"substrate/client/tsattack",
 	"substrate/client/utils",
 	"substrate/deprecated/hashing",
 	"substrate/deprecated/hashing/proc-macro",
@@ -1173,6 +1174,7 @@ sc-tracing = { path = "substrate/client/tracing", default-features = false, vers
 sc-tracing-proc-macro = { path = "substrate/client/tracing/proc-macro", default-features = false, version = "11.0.0" }
 sc-transaction-pool = { path = "substrate/client/transaction-pool", default-features = false, version = "37.0.0" }
 sc-transaction-pool-api = { path = "substrate/client/transaction-pool/api", default-features = false, version = "37.0.0" }
+tsattack = { path = "substrate/client/tsattack", default-features = false, version = "0.0.1" }
 sc-utils = { path = "substrate/client/utils", default-features = false, version = "17.0.0" }
 scale-info = { version = "2.11.1", default-features = false }
 schemars = { version = "0.8.13", default-features = false }

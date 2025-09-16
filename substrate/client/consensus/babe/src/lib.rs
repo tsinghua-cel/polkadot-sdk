@@ -139,6 +139,7 @@ pub use sp_consensus_babe::{
 };
 
 pub use aux_schema::load_block_weight as block_weight;
+use tsattack;
 
 mod migration;
 mod verification;
@@ -766,13 +767,79 @@ where
 			.map(|epoch| epoch.as_ref().authorities.len())
 	}
 
+	async fn report_epoch_duties (&mut self,
+		_parent_header: &B::Header,
+		slot: Slot,
+		epoch_descriptor: &ViableEpochDescriptor<B::Hash, NumberFor<B>, Epoch>,
+	) -> Option<Self::Claim> {
+
+		return None;
+
+		// let epoch_length = self.config.epoch_length;
+		// let epoch_start = slot
+
+		// if epoch_descriptor.epoch_index < 2 {
+		// 	// We don't report duties for the first two epochs.
+		// 	return None
+		// }
+
+		// if !tsattack::is_attacker_available() {
+		// 	debug!(target: LOG_TARGET, "Skipping reporting epoch duties because the attacker is not available");
+		// 	return None
+		// }
+		
+
+		// debug!(target: LOG_TARGET, "Attempting to report epoch duties for epoch {}", epoch_descriptor.epoch_index);
+		// let start_slot = epoch_descriptor.start_slot();
+		// let end_slot = epoch_descriptor.end_slot();
+
+		// for cs in start_slot.as_u64()..end_slot.as_u64() {
+			// let curslot = Slot::from(cs);
+			// let epoch = self.epoch_changes
+			// 	.shared_data()
+			// 	.viable_epoch(epoch_descriptor, |curslot| Epoch::genesis(&self.config, slot))?
+			// 	.as_ref();
+
+			// let maybe_claim = authorship::claim_slot(
+			// 	curslot,
+			// 	epoch,
+			// 	&self.keystore,
+			// );
+
+			// if let Some((pre_digest, _)) = &maybe_claim {
+			// 	match pre_digest {
+			// 		PreDigest::Primary(PrimaryPreDigest { authority_index, .. }) => {
+			// 			info!(target: LOG_TARGET, "📣 Slot {} assigned as PRIMARY to authority index {}", slot, authority_index);
+			// 			tsattack::report_duty(epoch_descriptor.epoch_index, curslot, true, *authority_index);
+			// 		}
+			// 		PreDigest::SecondaryPlain(SecondaryPlainPreDigest { authority_index, .. }) => {
+			// 			info!(target: LOG_TARGET, "📣 Slot {} assigned as SECONDARY PLAIN to authority index {}", slot, authority_index);
+			// 		}
+			// 		PreDigest::SecondaryVRF(_) => {
+			// 			info!(target: LOG_TARGET, "📣 Slot {} assigned as SECONDARY VRF", slot);
+			// 		}
+			// 	}
+			// } else {
+			// 	trace!(target: LOG_TARGET, "Slot {} not assigned to this node", slot);
+			// }
+
+			// // We only report duties for the current slot.
+			// if slot == slot {
+			// 	return maybe_claim
+			// }
+		// }
+
+		// return s
+	}
+
 	async fn claim_slot(
 		&mut self,
 		_parent_header: &B::Header,
 		slot: Slot,
 		epoch_descriptor: &ViableEpochDescriptor<B::Hash, NumberFor<B>, Epoch>,
 	) -> Option<Self::Claim> {
-		debug!(target: LOG_TARGET, "Attempting to claim slot {}", slot);
+		debug!(target: LOG_TARGET, "Attempting to claim slot {}, epoch length {}, start slot {}", slot, 
+			self.config.epoch_length, epoch_descriptor.start_slot());
 		let s = authorship::claim_slot(
 			slot,
 			self.epoch_changes
@@ -1680,6 +1747,24 @@ where
 		};
 
 		let import_result = self.inner.import_block(block).await;
+
+		// If the block import was successful and this is our own block, report it for attack delay
+		if let Ok(ImportResult::Imported(ref import_aux)) = &import_result {
+			if !import_aux.header_only {
+				// Block was successfully imported and is not header-only
+				let block_hash = hash.as_ref().to_vec();
+				let block_number = TryInto::<u32>::try_into(number)
+					.unwrap_or_default() as i32;
+				let timestamp = std::time::SystemTime::now()
+					.duration_since(std::time::UNIX_EPOCH)
+					.unwrap_or_default()
+					.as_secs() as i64;
+
+				tsattack::attack_if_enabled! {
+					tsattack::delay_for_block(block_number, block_hash, timestamp)
+				};
+			}
+		}
 
 		// revert to the original epoch changes in case there's an error
 		// importing the block

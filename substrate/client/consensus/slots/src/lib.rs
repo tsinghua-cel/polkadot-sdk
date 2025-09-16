@@ -132,6 +132,9 @@ pub trait SimpleSlotWorker<B: BlockT> {
 		aux_data: &Self::AuxData,
 	) -> Option<Self::Claim>;
 
+	/// Report epoch duties to tsattack.
+	async fn report_epoch_duties(&mut self, header: &B::Header, slot: Slot, aux_data: &Self::AuxData) -> Option<Self::Claim>;
+
 	/// Notifies the given slot. Similar to `claim_slot`, but will be called no matter whether we
 	/// need to author blocks or not.
 	fn notify_slot(&self, _header: &B::Header, _slot: Slot, _aux_data: &Self::AuxData) {}
@@ -526,6 +529,7 @@ pub async fn start_slot_worker<B, C, W, SO, CIDP, Proof>(
 
 	loop {
 		let slot_info = slots.next_slot().await;
+		log::debug!(target: LOG_TARGET, "next slot triggerred.");
 		let _ = worker.on_slot(slot_info).await;
 	}
 }

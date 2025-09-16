@@ -379,6 +379,15 @@ where
 		crate::standalone::claim_slot::<P>(slot, authorities, &self.keystore).await
 	}
 
+	async fn report_epoch_duties(
+		&mut self,
+		_header: &B::Header,
+		slot: Slot,
+		authorities: &Self::AuxData,
+	) -> Option<Self::Claim> {
+		crate::standalone::claim_slot::<P>(slot, authorities, &self.keystore).await
+	}
+
 	fn pre_digest_data(&self, slot: Slot, _claim: &Self::Claim) -> Vec<sp_runtime::DigestItem> {
 		vec![crate::standalone::pre_digest::<P>(slot)]
 	}

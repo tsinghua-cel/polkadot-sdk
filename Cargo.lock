@@ -17526,6 +17526,7 @@ dependencies = [
  "substrate-test-runtime-client",
  "thiserror",
  "tokio",
+ "tsattack",
 ]
 
 [[package]]
@@ -22741,6 +22742,18 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "termcolor",
+]
+
+[[package]]
+name = "tsattack"
+version = "0.0.1"
+dependencies = [
+ "env_logger 0.10.1",
+ "hex",
+ "log",
+ "once_cell",
+ "tokio",
+ "tsattack-client",
 ]
 
 [[package]]
