@@ -144,11 +144,11 @@ where
 			log::debug!(target: LOG_TARGET, "next slot internal trigger.");
 			let mut wait_dur = time_until_next_slot(self.slot_duration);
 			// check wait_dur is bigger than 3 seconds to avoid underflow
-			if wait_dur > Duration::from_millis(3000) {
-				wait_dur = wait_dur.sub(Duration::from_millis(3000));
-			} else {
-				wait_dur = Duration::from_millis(100);
-			}
+			// if wait_dur > Duration::from_millis(3000) {
+			// 	wait_dur = wait_dur.sub(Duration::from_millis(3000));
+			// } else {
+			// 	wait_dur = Duration::from_millis(100);
+			// }
 
 			self.until_next_slot = Some(Delay::new(wait_dur));
 
