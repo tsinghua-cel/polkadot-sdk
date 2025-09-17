@@ -186,7 +186,7 @@ where
 			// Never yield the same slot twice.
 			if slot > self.last_slot {
 				self.last_slot = slot;
-
+				log::debug!(target: LOG_TARGET, "next slot with best chain head {} {}", chain_head.number(), chain_head.hash());
 				break SlotInfo::new(
 					slot,
 					Box::new(inherent_data_providers),
