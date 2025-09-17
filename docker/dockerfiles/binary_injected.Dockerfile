@@ -1,4 +1,5 @@
-FROM docker.io/parity/base-bin
+FROM ubuntu:24.04
+#FROM docker.io/parity/base-bin
 
 # This file allows building a Generic container image
 # based on one or multiple pre-built Linux binaries.
@@ -38,7 +39,7 @@ COPY entrypoint.sh .
 COPY "bin/*" "/usr/local/bin/"
 RUN chmod -R a+rx "/usr/local/bin"
 
-USER parity
+#USER parity
 ENV BINARY=${BINARY}
 
 # ENTRYPOINT
