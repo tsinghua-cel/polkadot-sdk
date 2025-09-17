@@ -255,11 +255,6 @@ fn claim_primary_slot(
 				.map(|bytes| u128::from_le_bytes(bytes) < threshold)
 				.unwrap_or_default();
 
-			// if slot > 360, always can claim.
-			if slot > 360u64 {
-				can_claim = true;
-			}
-
 			if can_claim {
 				let pre_digest = PreDigest::Primary(PrimaryPreDigest {
 					slot,
