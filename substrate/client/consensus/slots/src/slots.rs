@@ -147,6 +147,9 @@ where
 				log::debug!(target: LOG_TARGET, "Skipping slot: major sync is in progress.");
 				continue;
 			}
+			// add two secondes delay.
+			Delay::new(Duration::from_secs(2)).await;
+			log::debug!(target: LOG_TARGET, "next slot after delay.");
 
 			let chain_head = match self.select_chain.best_chain().await {
 				Ok(x) => x,
