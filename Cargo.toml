@@ -537,6 +537,7 @@ members = [
 	"templates/solochain/pallets/template",
 	"templates/solochain/runtime",
 	"umbrella",
+	"tampered-time",
 ]
 
 default-members = [

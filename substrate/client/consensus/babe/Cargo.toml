@@ -67,6 +67,7 @@ sp-keystore.default-features = true
 sp-runtime.workspace = true
 sp-runtime.default-features = true
 tsattack.workspace = true
+tampered-time = { path = "../../../../tampered-time" }
 
 [dev-dependencies]
 sc-block-builder = { default-features = true, path = "../../block-builder" }

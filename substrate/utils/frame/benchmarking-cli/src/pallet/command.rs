@@ -278,7 +278,7 @@ impl PalletCmd {
 		// Run the benchmarks
 		let mut batches = Vec::new();
 		let mut batches_db = Vec::new();
-		let mut timer = time::SystemTime::now();
+		let mut timer = tampered_time::now();
 		// Maps (pallet, extrinsic) to its component ranges.
 		let mut component_ranges = HashMap::<(String, String), Vec<ComponentRange>>::new();
 		let pov_modes =
@@ -466,7 +466,7 @@ impl PalletCmd {
 					// Show progress information
 					if let Ok(elapsed) = timer.elapsed() {
 						if elapsed >= time::Duration::from_secs(5) {
-							timer = time::SystemTime::now();
+							timer = tampered_time::now();
 
 							log::info!(
 								target: LOG_TARGET,

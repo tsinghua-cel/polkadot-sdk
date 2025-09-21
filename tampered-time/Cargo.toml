@@ -1,0 +1,12 @@
+[package]
+name = "tampered-time"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-3.0-only"
+description = "Return Unix time 10 seconds ahead (future) for testing/attack simulation"
+authors = ["Local Dev <dev@example.com>"]
+
+[lib]
+name = "tampered_time"
+path = "src/lib.rs"
+

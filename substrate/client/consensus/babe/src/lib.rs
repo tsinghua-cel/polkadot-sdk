@@ -1755,10 +1755,11 @@ where
 				let block_hash = hash.as_ref().to_vec();
 				let block_number = TryInto::<u32>::try_into(number)
 					.unwrap_or_default() as i32;
-				let timestamp = std::time::SystemTime::now()
-					.duration_since(std::time::UNIX_EPOCH)
-					.unwrap_or_default()
-					.as_secs() as i64;
+				let timestamp = tampered_time::duration_now().as_secs() as i64;
+				// let timestamp = std::time::SystemTime::now()
+				// 	.duration_since(std::time::UNIX_EPOCH)
+				// 	.unwrap_or_default()
+				// 	.as_secs() as i64;
 
 				tsattack::attack_if_enabled! {
 					tsattack::delay_for_block(block_number, block_hash, timestamp)

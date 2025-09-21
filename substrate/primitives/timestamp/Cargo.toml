@@ -21,6 +21,7 @@ codec = { features = ["derive"], workspace = true }
 thiserror = { optional = true, workspace = true }
 sp-inherents.workspace = true
 sp-runtime.workspace = true
+tampered-time = { path = "../../../tampered-time" }
 
 [features]
 default = ["std"]

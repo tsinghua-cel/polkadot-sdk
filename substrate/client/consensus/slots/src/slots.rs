@@ -32,11 +32,7 @@ use std::time::{Duration, Instant};
 
 /// Returns current duration since unix epoch.
 pub fn duration_now() -> Duration {
-	use std::time::SystemTime;
-	let now = SystemTime::now();
-	now.duration_since(SystemTime::UNIX_EPOCH).unwrap_or_else(|e| {
-		panic!("Current time {:?} is before unix epoch. Something is wrong: {:?}", now, e)
-	})
+	return tampered_time::duration_now();
 }
 
 /// Returns the duration until the next slot from now.

@@ -62,10 +62,11 @@ impl Timestamp {
 	pub fn current() -> Self {
 		use std::time::SystemTime;
 
-		let now = SystemTime::now();
-		now.duration_since(SystemTime::UNIX_EPOCH)
-			.expect("Current time is always after unix epoch; qed")
-			.into()
+		tampered_time::duration_now().into()
+		// let now = SystemTime::now();
+		// now.duration_since(SystemTime::UNIX_EPOCH)
+		// 	.expect("Current time is always after unix epoch; qed")
+		// 	.into()
 	}
 }
 

@@ -5844,6 +5844,7 @@ dependencies = [
  "sp-storage",
  "sp-trie",
  "sp-wasm-interface",
+ "tampered-time",
  "thiserror",
  "thousands",
 ]
@@ -17524,6 +17525,7 @@ dependencies = [
  "sp-tracing",
  "substrate-prometheus-endpoint",
  "substrate-test-runtime-client",
+ "tampered-time",
  "thiserror",
  "tokio",
  "tsattack",
@@ -17793,6 +17795,7 @@ dependencies = [
  "sp-runtime",
  "sp-state-machine",
  "substrate-test-runtime-client",
+ "tampered-time",
 ]
 
 [[package]]
@@ -20781,6 +20784,7 @@ dependencies = [
  "parity-scale-codec",
  "sp-inherents",
  "sp-runtime",
+ "tampered-time",
  "thiserror",
 ]
 
@@ -21831,6 +21835,10 @@ dependencies = [
  "core-foundation-sys",
  "libc",
 ]
+
+[[package]]
+name = "tampered-time"
+version = "0.1.0"
 
 [[package]]
 name = "tap"
